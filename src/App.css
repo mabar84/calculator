@@ -1,5 +1,5 @@
 .App {
-    background: tomato;
+    /*background: tomato;*/
     height: 100vh;
 }
 
@@ -17,7 +17,8 @@
     height: 75px;
     width: 310px;
     border: none;
-    background: tomato;font-size: 50px;
+    background: tomato;
+    font-size: 50px;
     color: #111111;
     text-align: right;display: block;
 }
