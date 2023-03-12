@@ -3,7 +3,7 @@ import './App.css';
 import {Keyboard} from './keyboard/keyboard';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./bll/store";
-import {incValueAC, setValueFromLocalStorageAC} from "./bll/counter-reducer";
+import {incValueAC, setValueFromLocalStorageAC} from "./bll/calc-reducer";
 
 function App() {
 
@@ -14,8 +14,8 @@ function App() {
     const signs = '+-*/'
     // let [value, setValue] = useState<string>('')
     // let [sign, setSign] = useState<string>('')
-    let [a, setA] = useState<string>('')
-    let [b, setB] = useState<string>('')
+    // let [a, setA] = useState<string>('')
+    // let [b, setB] = useState<string>('')
 
     // console.log('a=', a)
     // console.log('b=', b)
@@ -39,11 +39,8 @@ function App() {
 
         if (symbol === '=') {
 
-
-            let n1=+a
-            let n2=+b.slice(1,b.length)
-
-            // console.log(sign)
+            // let n1=+a
+            // let n2=+b.slice(1,b.length)
 
             // switch (sign) {
             //     case '+':
@@ -59,6 +56,9 @@ function App() {
     }
     console.log('APP')
     const value = useSelector<AppStateType, number>(state => state.counter.value)
+    const a = useSelector<AppStateType, number>(state => state.counter.a)
+    const b = useSelector<AppStateType, number>(state => state.counter.b)
+    const sign = useSelector<AppStateType, string>(state => state.counter.sign)
     const dispatch = useDispatch()
 
     dispatch(setValueFromLocalStorageAC(value))
@@ -69,9 +69,9 @@ function App() {
     return (
         <div className="App">
 
-            <h2>{value}</h2>
+            {/*<h2>{value}</h2>*/}
             <button onClick={incHandler}>inc</button>
-            <div className="body">
+            <div className="case">
                 <span className={'input'}>{value}</span>
 
                 <Keyboard arr={arr} click={click}/>
