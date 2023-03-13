@@ -1,13 +1,13 @@
 import {combineReducers, createStore} from "redux";
 import {calcReducer} from "./calc-reducer";
-import {saveState} from "../utils/localStorage";
+import {saveState} from "../utils/sessionStorage";
 
 const rootReducer = combineReducers({
-    counter: calcReducer
+    calc: calcReducer
 })
 
 let preloadedState;
-const persistedState = localStorage.getItem('app-state')
+const persistedState = sessionStorage.getItem('app-state')
 if (persistedState) {
     preloadedState = JSON.parse(persistedState)
 }
@@ -18,7 +18,7 @@ export const store = createStore(
 );
 store.subscribe(() => {
     saveState({
-        counter: store.getState().counter
+        calc: store.getState().calc
     });
 });
 

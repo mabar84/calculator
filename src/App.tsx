@@ -1,79 +1,49 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Keyboard} from './keyboard/keyboard';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./bll/store";
-import {incValueAC, setValueFromLocalStorageAC} from "./bll/calc-reducer";
+import {setAAC, setBAC, setNullAC, setResultAC, setSignAC} from "./bll/calc-reducer";
+
 
 function App() {
-
-
-
-    const arr = [1, 2, 3, '+', 4, 5, 6, '-', 7, 8, 9, '*', 0, 'C', '=', '/']
-    const numbers = '0123456789'
-    const signs = '+-*/'
-    // let [value, setValue] = useState<string>('')
-    // let [sign, setSign] = useState<string>('')
-    // let [a, setA] = useState<string>('')
-    // let [b, setB] = useState<string>('')
-
-    // console.log('a=', a)
-    // console.log('b=', b)
-
-    const click = (symbol: string) => {
-
-        if ('+-*/'.includes(symbol)) {
-            // sign = symbol
-            // setSign(sign)
-        }
-
-        // setValue(value + symbol)
-
-        // sign ? setB(b + symbol) : setA(a + symbol)
-
-        if (symbol === 'C') {
-            // setA('')
-            // setB('')
-            // setValue('')
-        }
-
-        if (symbol === '=') {
-
-            // let n1=+a
-            // let n2=+b.slice(1,b.length)
-
-            // switch (sign) {
-            //     case '+':
-            //         return setValue((n1 + n2).toString())
-            //     case '-':
-            //         return setValue((n1 - n2).toString())
-            //     case '*':
-            //         return setValue((n1 * n2).toString())
-            //     case '/':
-            //         return setValue((n1 / n2).toString())
-            // }
-        }
-    }
-    console.log('APP')
-    const value = useSelector<AppStateType, number>(state => state.counter.value)
-    const a = useSelector<AppStateType, number>(state => state.counter.a)
-    const b = useSelector<AppStateType, number>(state => state.counter.b)
-    const sign = useSelector<AppStateType, string>(state => state.counter.sign)
+    useEffect(() => {
+        sessionStorage.clear()
+    }, [])
+    const result = useSelector<AppStateType, number>(state => state.calc.result)
+    const a = useSelector<AppStateType, string>(state => state.calc.a)
+    const b = useSelector<AppStateType, string>(state => state.calc.b)
+    const sign = useSelector<AppStateType, string>(state => state.calc.sign)
     const dispatch = useDispatch()
 
-    dispatch(setValueFromLocalStorageAC(value))
+    const arr = [1, 2, 3, '+', 4, 5, 6, '-', 7, 8, 9, '*', 0, 'C', '=', '/']
 
-    const incHandler = () => {
-        dispatch(incValueAC())
+    const click = (symbol: string) => {
+        if ('+-*/'.includes(symbol)) {
+            if (b) {
+                dispatch(setResultAC())
+            } else {
+                dispatch(setSignAC(symbol))
+            }
+            dispatch(setSignAC(symbol))
+        }
+        if ('0123456789'.includes(symbol)) {
+            sign ? dispatch(setBAC(symbol)) : dispatch(setAAC(symbol))
+        }
+        if (symbol === '=') {
+            dispatch(setResultAC())
+        }
+        if (symbol === 'C') {
+            dispatch(setNullAC())
+        }
     }
+    let input = a ? a + sign + b : 0
     return (
         <div className="App">
-
-            {/*<h2>{value}</h2>*/}
-            <button onClick={incHandler}>inc</button>
             <div className="case">
-                <span className={'input'}>{value}</span>
-
+                <span className={'input'}>
+{input}
+                </span>
                 <Keyboard arr={arr} click={click}/>
             </div>
         </div>

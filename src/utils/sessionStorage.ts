@@ -2,7 +2,7 @@ import {AppStateType} from "../bll/store";
 
 export const loadState = () => {
     try {
-        const serializedState = localStorage.getItem('state');
+        const serializedState = sessionStorage.getItem('state');
         if (serializedState === null) {
             return undefined;
         }
@@ -15,7 +15,7 @@ export const loadState = () => {
 export const saveState = (state: AppStateType) => {
     try {
         const serializedState = JSON.stringify(state);
-        localStorage.setItem('app-state', serializedState);
+        sessionStorage.setItem('app-state', serializedState);
     } catch {
         // ignore write errors
     }

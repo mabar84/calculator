@@ -1,7 +1,7 @@
 const initialState = {
-    value: 0,
-    a: 0,
-    b: 0,
+    result: 0,
+    a: '',
+    b: '',
     sign: ''
 }
 
@@ -9,19 +9,49 @@ type InitialStateType = typeof initialState
 
 export const calcReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
-        case "INC-VALUE":
-            return {...state, value: state.value + 1}
-        case "SET-VALUE-FROM-LOCAL-STORAGE":
-            return {...state, value: action.value}
+        case "SET-SIGN":
+            return {...state, sign: action.sign}
+        case "SET-A":
+            return {...state, a: state.a + action.a}
+        case "SET-B":
+            return {...state, b: state.b + action.b}
+        case "SET-NULL":
+            return {...state, a: '',b:'',sign:'',result:0}
+        case "SET-RESULT":
+            let result = 0
+            switch (state.sign) {
+                case '+':
+                    result = +state.a + +state.b
+                    break
+                case '-':
+                    result = +state.a - +state.b
+                    break
+                case '*':
+                    result = +state.a * +state.b
+                    break
+                case '/':
+                    result = +state.a / +state.b
+                    break
+                default:
+                    break
+            }
+            return {...state, result: result, a: result.toString(), b: '', sign: ''}
         default:
             return state
     }
 }
 
-export const incValueAC = () => ({type: 'INC-VALUE'} as const)
-export const setValueFromLocalStorageAC = (value: number) => ({type: 'SET-VALUE-FROM-LOCAL-STORAGE', value} as const)
+export const setSignAC = (sign: string) => ({type: 'SET-SIGN', sign} as const)
+export const setAAC = (a: string) => ({type: 'SET-A', a} as const)
+export const setBAC = (b: string) => ({type: 'SET-B', b} as const)
+export const setNullAC = () => ({type: 'SET-NULL'} as const)
+export const setResultAC = () => ({type: 'SET-RESULT'} as const)
 
-export type IncValueACType = ReturnType<typeof incValueAC>
-export type SetValueFromLocalStorageACType = ReturnType<typeof setValueFromLocalStorageAC>
+// export type SetResultFromLocalStorageACType = ReturnType<typeof setResultFromLocalStorageAC>
+export type SetSignACType = ReturnType<typeof setSignAC>
+export type SetAACType = ReturnType<typeof setAAC>
+export type SetBACType = ReturnType<typeof setBAC>
+export type SetNullCType = ReturnType<typeof setNullAC>
+export type SetResultACType = ReturnType<typeof setResultAC>
 
-type ActionType = IncValueACType | SetValueFromLocalStorageACType
+type ActionType = SetAACType | SetBACType | SetSignACType |SetNullCType| SetResultACType
